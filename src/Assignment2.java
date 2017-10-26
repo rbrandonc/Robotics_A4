@@ -66,7 +66,10 @@ public class Assignment2 {
 			distance = getDistance();
 			deltaD = (oldDistance - distance);
 			
-			if((deltaD > 0) || distance < .1) { //turning right 
+			if(!Double.isFinite(deltaD)) {
+				lspeeed = 20;
+				rspeeed = baseSpeeed;
+			} else if((deltaD > 0) || distance < .1) { //turning right 
 				lspeeed = (int) (baseSpeeed + ( deltaD * scale));
 				rspeeed = baseSpeeed;
 			} else if((deltaD <  0) || distance > .25) { //turning left 
@@ -74,8 +77,8 @@ public class Assignment2 {
 				rspeeed = (int) (baseSpeeed + ( -1* deltaD * scale));
 			} else {
 				//int x = lspeeed;
-//				lspeeed = baseSpeeed;
-//				rspeeed = baseSpeeed;
+				lspeeed = baseSpeeed;
+				rspeeed = baseSpeeed;
 			}
 			
 			if (lspeeed > 1000) {

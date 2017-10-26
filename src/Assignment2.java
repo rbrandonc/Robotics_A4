@@ -29,97 +29,81 @@ public class Assignment2 {
 	
 	static float orientation = 0;
 	
-	static double wheelbase = 16.5;
+	static double wheelbase = 11.9;
 	
 	public static void main(String[] args) throws InterruptedException {
-
 		//Beep
 		beep();
+		System.out.println("TOUCH ME");
 		waitForButtonPress();
-
-		//Drive to wall
-		while(getBumper() != true) {
-			move(200, 200, true, true, 100);
-		}
-		stop();
+//
+//		//Drive to wall
+//		while(getBumper() != true) {
+//			move(350, 350, true, true, 100);
+//		}
+//		stop();
+//		
+//		//Back up
+//		move(100, 100, false, false, 3000);
+//		stop();
+//		
+//		//Turn
+//		move(180, 180, true, false, 1000);
+//		
+//		stop();
 		
-		//Back up
-		move(100, 100, false, false, 3000);
-		stop();
-		
-		//Turn
-		move(180, 180, true, false, 800);
-		
-		stop();
+		int baseSpeeed = 100;
+		int scale = 3000;
+		int lspeeed = 100, rspeeed = 100;
+		double distance = getDistance();
+		double oldDistance = getDistance();
+		double deltaD = 0;
 		
 		//Spidey senses
-		double distanceToWall = getDistance();
-		double oldDistanceToWall;
+		while(true) {
+			//System.out.println("\n\n\n\n\n\n\n\n");
 
-		while(orientation > 0) {
-			oldDistanceToWall = distanceToWall;
+			distance = getDistance();
+			deltaD = (oldDistance - distance);
 			
-			//Move forwards 1.905cm in .5s
-			move(180, 180, true, true, 500);
+			if((deltaD > 0) || distance < .1) { //turning right 
+				lspeeed = (int) (baseSpeeed + ( deltaD * scale));
+				rspeeed = baseSpeeed;
+			} else if((deltaD <  0) || distance > .25) { //turning left 
+				lspeeed = baseSpeeed;
+				rspeeed = (int) (baseSpeeed + ( -1* deltaD * scale));
+			} else {
+				//int x = lspeeed;
+//				lspeeed = baseSpeeed;
+//				rspeeed = baseSpeeed;
+			}
 			
-			distanceToWall = getDistance();
-			
-			
+			if (lspeeed > 1000) {
+				lspeeed = 100; 
+			}
+			if (rspeeed > 1000) {
+				rspeeed = 100; 
+			}
+			System.out.print(lspeeed + " ");
+			System.out.print(rspeeed + " ");
+			System.out.print(distance + " " + oldDistance);
+			System.out.print(deltaD + " ");
+			System.out.println();
 
-			
-			//Positive means we got farther away, negative means we got closer
-			double changeInDistanceToWall = (oldDistanceToWall - distanceToWall);
-			double degreesChange = 57.2958*Math.atan((changeInDistanceToWall*100) / 1.905); //1.905
-			double newOrientation;
-			if(degreesChange > 0)
-				newOrientation = orientation + degreesChange;
-			else
-				newOrientation = orientation + degreesChange;
-			
-			if(distanceToWall > .5) {
-				newOrientation = orientation - 10;
-			} 
-			System.out.println("\n\n\n\n\n\nOld D: " + oldDistanceToWall);
-			System.out.println("New D: " + distanceToWall);
-			System.out.println("Orien: " + orientation);
-			System.out.println("Chang: - " + degreesChange);
-			System.out.println("New  : - " + newOrientation);
-			
-				//turn to face new orientation
-				if(degreesChange > 0) {
-					while(orientation < newOrientation) {
-						move(100, 100, true, false, 100);
-					}
-				}
-				
-				if(degreesChange < 0 && distanceToWall > .2) {
-					while(orientation > newOrientation) {
-						move(100, 100, false, true, 100);
-					}
-				}
-
-			
-			stop();
-//			waitForButtonPress();
-
-			Thread.sleep(200);
-			
-			//Re measure distance
-			distanceToWall = getDistance();
-			
+			move(lspeeed, rspeeed, true, true, 1);
 		}
-		stop();
-		
-		move(130, 130, true, true, 0);
-		mA.rotate(1128, true);
-		mB.rotate(1128, true);
 
-		end();
+		
+		//Move 75cm
+//		move(130, 130, true, true, 0);
+//		mA.rotate(1504, true);
+//		mB.rotate(1504, true);
+//
+//		end();
 
 	}
 	
 	private static void move(int aSpeed, int bSpeed, boolean directionA, boolean directionB, double time) throws InterruptedException {
-		//probably trash
 		long start = System.currentTimeMillis();
 		mA.setSpeed(aSpeed);
 		mB.setSpeed(bSpeed);
@@ -134,11 +118,11 @@ public class Assignment2 {
 			mB.backward();
 		}
 		Thread.sleep((long) time);
-		double a = 3.81 * aSpeed;
+		double a = 2.857 * aSpeed;
 		if(!directionA) {
 			a = -1*a;
 		}
-		double b = 3.81 * bSpeed;
+		double b = 2.857 * bSpeed;
 		if(!directionB) {
 			b = -1*b;
 		}
@@ -304,3 +288,57 @@ public class Assignment2 {
 	}
 	
 }
+
+//double distanceToWall = getDistance();
+//double oldDistanceToWall;
+//
+//while(orientation > 0) {
+//	oldDistanceToWall = distanceToWall;
+//	
+//	//Move forwards 4.48855050383cm in .5s
+//	move(180, 180, true, true, 500);
+//	
+//	distanceToWall = getDistance();
+//	
+//	//Positive means we got farther away, negative means we got closer
+//	double changeInDistanceToWall = (oldDistanceToWall - distanceToWall);
+//	double degreesChange = 57.2958*Math.atan((changeInDistanceToWall*100) / 4.48855050383); //1.905
+//	double newOrientation;
+//	if(degreesChange > 0)
+//		newOrientation = orientation + degreesChange;
+//	else
+//		newOrientation = orientation + degreesChange;
+//	
+//	if(distanceToWall > .5) {
+//		newOrientation = orientation - 10;
+//	} 
+//	System.out.println("\n\n\n\n\n\nOld D: " + oldDistanceToWall);
+//	System.out.println("New D: " + distanceToWall);
+//	System.out.println("Orien: " + orientation);
+//	System.out.println("Chang: - " + degreesChange);
+//	System.out.println("New  : - " + newOrientation);
+//	
+//		//turn to face new orientation
+//		if(degreesChange > 0) {
+//			while(orientation < newOrientation) {
+//				move(100, 100, true, false, 100);
+//			}
+//		}
+//		
+//		if(degreesChange < 0 && distanceToWall > .2) {
+//			while(orientation > newOrientation) {
+//				move(100, 100, false, true, 100);
+//			}
+//		}
+//
+//	
+//	stop();
+////	waitForButtonPress();
+//
+//	Thread.sleep(200);
+//	
+//	//Re measure distance
+//	distanceToWall = getDistance();
+//	
+//}
+//stop();

@@ -37,20 +37,20 @@ public class Assignment2 {
 		System.out.println("TOUCH ME");
 		waitForButtonPress();
 //
-//		//Drive to wall
-//		while(getBumper() != true) {
-//			move(350, 350, true, true, 100);
-//		}
-//		stop();
-//		
-//		//Back up
-//		move(100, 100, false, false, 3000);
-//		stop();
-//		
-//		//Turn
-//		move(180, 180, true, false, 1000);
-//		
-//		stop();
+		//Drive to wall
+		while(getBumper() != true) {
+			move(350, 350, true, true, 100);
+		}
+		stop();
+		
+		//Back up
+		move(100, 100, false, false, 3000);
+		stop();
+		
+		//Turn
+		move(180, 180, true, false, 1000);
+		
+		stop();
 		
 		int baseSpeeed = 100;
 		int scale = 3000;
@@ -60,7 +60,7 @@ public class Assignment2 {
 		double deltaD = 0;
 		
 		//Spidey senses
-		while(true) {
+		while(orientation > 0 ) {
 			//System.out.println("\n\n\n\n\n\n\n\n");
 
 			distance = getDistance();
@@ -84,6 +84,7 @@ public class Assignment2 {
 			if (rspeeed > 1000) {
 				rspeeed = 100; 
 			}
+			
 			System.out.print(lspeeed + " ");
 			System.out.print(rspeeed + " ");
 			System.out.print(distance + " " + oldDistance);
@@ -95,11 +96,11 @@ public class Assignment2 {
 
 		
 		//Move 75cm
-//		move(130, 130, true, true, 0);
-//		mA.rotate(1504, true);
-//		mB.rotate(1504, true);
-//
-//		end();
+		move(130, 130, true, true, 0);
+		mA.rotate(1504, true);
+		mB.rotate(1504, true);
+
+		end();
 
 	}
 	
